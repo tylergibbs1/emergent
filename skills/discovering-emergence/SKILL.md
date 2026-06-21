@@ -45,7 +45,7 @@ Otherwise:
    them (e.g. `ssh root@213.1.2.3 -p 22001 -i ~/.ssh/id_ed25519`) and the
    workspace path on the pod (default `/workspace`). Do not guess credentials.
 
-2. **Explore in parallel.** Launch two `Agent` subagents simultaneously:
+2. **Explore in parallel.** Launch three `Agent` subagents simultaneously:
 
    - **Agent 1 — Local project**: scan this repo's structure, language/framework,
      any existing models, training code, datasets, READMEs. Summarize what's here
@@ -54,24 +54,34 @@ Otherwise:
      (GPU model, count, VRAM), Python/CUDA/PyTorch versions, installed ML
      packages, disk space, and any code already in the workspace. Report exactly
      what's available. See [references/RUNPOD.md](references/RUNPOD.md).
+   - **Agent 3 — Literature scan**: use the `arxiv` CLI to survey where emergence
+     is currently being reported and which phenomena look most tractable on a
+     single GPU (grokking, in-context learning, induction heads, tool use, phase
+     transitions, …). Return a short ranked list of candidate directions with the
+     arXiv ids that motivate each. See [references/LITERATURE.md](references/LITERATURE.md).
 
-   Wait for both before proceeding.
+   Wait for all three before proceeding.
 
-3. **Ask one focusing question** (use `AskUserQuestion` if available):
+3. **Choose the direction yourself.** Do NOT ask the user what to study. Weigh the
+   three reports and pick the single direction with the highest chance of
+   surfacing a genuine emergent property *within this GPU's budget*. Judge each
+   candidate on:
+   - **Tractability** — a small model can reach the regime where the effect
+     appears, within `budget`.
+   - **Surprise potential** — the phenomenon is qualitative/discontinuous, not a
+     smooth metric gain (see [references/EMERGENCE.md](references/EMERGENCE.md)).
+   - **Measurability** — you can define an off-objective probe that would catch it.
+   - **Headroom** — it isn't already fully characterized in the literature, so a
+     positive result is novel.
 
-   > I've explored your project and the pod. Here's what's available:
-   > - [local summary] / [GPU + env from the pod]
-   >
-   > **What direction should the emergence hunt take?**
-   > e.g., a domain ("small language models", "RL agents", "diffusion"), a
-   > phenomenon ("grokking", "in-context learning", "tool use"), or "surprise me
-   > within what this GPU can handle."
-
-   Infer everything else: `run_template` from the framework found, `probes` from
-   the domain, `budget` from GPU cost, `tag` from today's date.
+   Derive the rest from the exploration: `run_template` from the framework found,
+   `probes` from the chosen phenomenon (always include an off-objective probe),
+   `budget` from the GPU's hourly cost, `tag` from today's date.
 
 4. **Write `emergence.json`** — see [references/CONFIG.md](references/CONFIG.md).
-   Show it to the user for confirmation, then proceed.
+   Briefly tell the user which direction you chose and why (one paragraph), then
+   proceed. The user need not approve the direction — only stop them if a
+   credential or the budget cap is missing.
 
 ## Connect Phase
 
@@ -144,7 +154,10 @@ to continue.** The user may be asleep and expects you to keep hunting.
    confirmed / crash), and the next thread it opens.
 
 9. Every 10 experiments, write a SYNTHESIS entry: what patterns are emerging,
-   which directions are dead, what to chase next.
+   which directions are dead, what to chase next. If the chosen direction has
+   gone flat across many experiments, PIVOT to the next-best candidate from the
+   Discovery Flow literature scan (re-run a baseline and its probes for the new
+   direction). Don't burn the whole budget on a dead end.
 
 10. GOTO 1
 ```

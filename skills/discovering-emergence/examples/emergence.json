@@ -7,16 +7,17 @@
   "modifiable_files": ["experiment.py"],
   "readonly_files": ["model.py", "data.py", "README.md"],
   "run_template": "python experiment.py --config run.yaml",
+  "_comment": "Generic template. The agent chooses the actual direction during the Discovery Flow and rewrites domain + probes to fit it. Probe KINDS stay the same; only their names/greps change to match the chosen phenomenon. Always keep at least one off-objective probe.",
   "probes": [
-    { "name": "target_acc", "grep": "^probe_target_acc:", "kind": "target", "note": "the task being trained" },
-    { "name": "icl_acc", "grep": "^probe_icl_acc:", "kind": "off-objective", "note": "in-context learning, never directly rewarded" },
-    { "name": "ood_gen", "grep": "^probe_ood_gen:", "kind": "generalization", "note": "held-out compositional split" },
-    { "name": "feat_sparsity", "grep": "^probe_feat_sparsity:", "kind": "internal", "note": "fraction of dead/sparse features" },
-    { "name": "train_loss", "grep": "^probe_train_loss:", "kind": "sanity", "note": "distinguishes 'learned nothing' from 'learned, no transfer'" }
+    { "name": "target", "grep": "^probe_target:", "kind": "target", "note": "the quantity being trained/optimized" },
+    { "name": "offobj", "grep": "^probe_offobj:", "kind": "off-objective", "note": "a capability the objective does NOT reward — where emergence hides" },
+    { "name": "gen", "grep": "^probe_gen:", "kind": "generalization", "note": "held-out / OOD / compositional split" },
+    { "name": "internal", "grep": "^probe_internal:", "kind": "internal", "note": "a structural measure (sparsity, circuit presence, rank)" },
+    { "name": "fit", "grep": "^probe_fit:", "kind": "sanity", "note": "train fit — distinguishes 'learned nothing' from 'learned, no transfer'" }
   ],
   "budget": { "max_hours": 12, "max_usd": 60, "usd_per_hour": 0.69, "stop_pod_on_finish": true },
   "timeout_seconds": 1800,
   "seeds": [0, 1, 2],
   "no_new_dependencies": true,
-  "domain": "emergent in-context learning in sub-10M-parameter transformers"
+  "domain": "CHOSEN BY THE AGENT during Discovery Flow — no fixed direction"
 }
