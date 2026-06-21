@@ -20,11 +20,22 @@ reproduction, ablation, and a hunt for the boring explanation.
 
 ## Install
 
-This repo is a Claude Code plugin. Either:
+```bash
+npx skills add tylergibbs1/emergent
+```
 
-- **As a plugin** — point your Claude Code plugin config at this repo, or
-- **As a personal skill** — copy `skills/discovering-emergence/` into
-  `~/.claude/skills/` (or a project's `.claude/skills/`).
+Or install manually:
+
+```bash
+cp -r skills/discovering-emergence ~/.claude/skills/discovering-emergence
+```
+
+Or clone directly into your skills directory:
+
+```bash
+git clone https://github.com/tylergibbs1/emergent.git \
+  ~/.claude/skills/emergent
+```
 
 Then in Claude Code:
 
