@@ -1,4 +1,12 @@
-# Grounding the Hunt in Literature (arxiv CLI)
+# Grounding the Hunt: Ideas (arXiv) + APIs (Context7)
+
+Two lookup tools, two jobs:
+- **`arxiv` CLI** — *ideas and novelty*: where emergence is reported, techniques
+  to try, and whether a "discovery" is already known.
+- **Context7 MCP** — *correct, current API usage*: the latest PyTorch / library
+  syntax so experiment code doesn't crash on a stale API and waste GPU budget.
+
+## arXiv CLI
 
 Use the agent-friendly `arxiv` CLI (https://github.com/tylergibbs1/arxivcli) to
 ground hypotheses in prior work, find techniques to try, and check whether a
@@ -54,3 +62,27 @@ arxiv list cs.LG --max 20 --fields id,title
 3. Implement the smallest version that could show the effect on this GPU.
 4. Run it through the normal MEASURE → VERIFY pipeline. A paper's claim is a
    hypothesis to test, not a result to assume.
+
+## Context7: current ML/PyTorch docs
+
+Training data drifts; PyTorch and the ML stack move fast. Before writing code
+against an API you're not certain of (new `torch` ops, `torch.compile`,
+autocast/AMP, FSDP, `scaled_dot_product_attention`, dataloader/Dataset changes,
+a third-party lib like `transformers`/`einops`/`flash-attn`), look up the live
+docs via Context7 rather than guessing.
+
+```
+1. mcp__context7__resolve-library-id  with the library name (e.g. "pytorch")
+2. mcp__context7__query-docs           with the resolved id + your exact question
+3. Write the code against the returned docs; note the version if it matters.
+```
+
+When to reach for it:
+- The first run of a new experiment crashes on an API/signature error.
+- You're using a feature you haven't touched recently (mixed precision,
+  distributed, custom autograd, a new scheduler).
+- A library on the pod is a different major version than you remember (check
+  `pip show <lib>` on the pod first, then query that version).
+
+Context discipline: query the one specific thing you need, not whole guides.
+Don't pull broad docs into the loop — ask a precise question and keep the answer.

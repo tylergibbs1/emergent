@@ -126,7 +126,10 @@ to continue.** The user may be asleep and expects you to keep hunting.
 
 3. DESIGN. Edit ONLY modifiable_files. Change one variable so the result is
    interpretable. Include the full probe battery in the run so you can catch
-   surprises you weren't looking for.
+   surprises you weren't looking for. When using a PyTorch / library API you're
+   unsure of, look up the CURRENT docs via Context7 before writing the code —
+   don't rely on memory (see references/LITERATURE.md). A run that crashes on a
+   stale API wastes GPU budget.
 
 4. SYNC & RUN. Push changed files to the pod. Launch the run with ALL output
    redirected to runs/<id>.log on the POD (never stream to your context). Poll
