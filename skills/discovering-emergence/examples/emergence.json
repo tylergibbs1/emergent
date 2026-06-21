@@ -1,0 +1,22 @@
+{
+  "tag": "jun21",
+  "runpod": {
+    "ssh": "ssh root@213.1.2.3 -p 22001 -i ~/.ssh/id_ed25519",
+    "workspace": "/workspace"
+  },
+  "modifiable_files": ["experiment.py"],
+  "readonly_files": ["model.py", "data.py", "README.md"],
+  "run_template": "python experiment.py --config run.yaml",
+  "probes": [
+    { "name": "target_acc", "grep": "^probe_target_acc:", "kind": "target", "note": "the task being trained" },
+    { "name": "icl_acc", "grep": "^probe_icl_acc:", "kind": "off-objective", "note": "in-context learning, never directly rewarded" },
+    { "name": "ood_gen", "grep": "^probe_ood_gen:", "kind": "generalization", "note": "held-out compositional split" },
+    { "name": "feat_sparsity", "grep": "^probe_feat_sparsity:", "kind": "internal", "note": "fraction of dead/sparse features" },
+    { "name": "train_loss", "grep": "^probe_train_loss:", "kind": "sanity", "note": "distinguishes 'learned nothing' from 'learned, no transfer'" }
+  ],
+  "budget": { "max_hours": 12, "max_usd": 60, "usd_per_hour": 0.69, "stop_pod_on_finish": true },
+  "timeout_seconds": 1800,
+  "seeds": [0, 1, 2],
+  "no_new_dependencies": true,
+  "domain": "emergent in-context learning in sub-10M-parameter transformers"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "emergent",
+  "description": "Autonomous ML research loop that hunts for emergent properties on a remote RunPod GPU over SSH, grounding hypotheses in arXiv literature and verifying every surprise before claiming it.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Tyler Gibbs"
+  },
+  "skills": [
+    "./skills/discovering-emergence"
+  ]
+}
